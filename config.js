@@ -1,4 +1,8 @@
+const Redis = require('koa-redis')
+
 module.exports = {
+  keys: ['czf', 'secret'],
+  session: { key: 'czf', prefix: 'czf:uid', store: new Redis() },
   db: 'mongodb://127.0.0.1:27017/track',
   redis: {
     get host() {
@@ -24,5 +28,5 @@ module.exports = {
     get expire() {
       return new Date().getTime() + 60 * 1000
     }
-  }
+  },
 }
