@@ -11,6 +11,10 @@ const config = require('./config.js')
 const passport = require('./utils/passport.js')
 const users = require('./interfaces/users.js')
 
+mongoose.connect(config.db, {
+    useNewUrlParser: true
+})
+
 const host = process.env.HOST || '127.0.0.1'
 const port = process.env.PORT || 3000
 
@@ -34,10 +38,6 @@ app.use(session({ key: 'czf', prefix: 'czf:uid', store: new Redis() }))
 
 app.use(passport.initialize())
 app.use(passport.session())
-
-mongoose.connect(config.db, {
-    useNewUrlParser: true
-})
 
 app.listen(port, host)
 
