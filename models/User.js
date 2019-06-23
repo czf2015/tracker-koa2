@@ -167,6 +167,6 @@ schema.methods = {
   }
 }
 
-const Account = mongoose.model('Account', schema)
+const User = mongoose.model('User', schema)
 
-module.exports = Account
+module.exports = User

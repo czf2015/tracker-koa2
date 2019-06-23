@@ -7,7 +7,7 @@ const nodeMailer = require('nodemailer')
 const passport = require('../utils/passport.js')
 const axios = require('../utils/axios.js')
 const config = require('../config.js')
-const Account = require('../models/Account.js')
+const User = require('../models/User.js')
 
 const router = new Router({
   prefix: '/users'
@@ -44,7 +44,7 @@ router.post('/register', async ctx => {
     }
   }
 
-  const user = await Account.find({
+  const user = await User.find({
     username
   })
 
@@ -56,13 +56,13 @@ router.post('/register', async ctx => {
     return
   }
   // 创建新账户
-  const newAccount = await Account.create({
+  const newUser = await User.create({
     username,
     password,
     email
   })
 
-  if (!newAccount) {
+  if (!newUser) {
     ctx.body = {
       code: -1, 
       msg: '注册失败'
