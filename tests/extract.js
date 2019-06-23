@@ -16,7 +16,7 @@ function extract(raw, separate) {
                 if (Array.isArray(raw[key])) {
                     continue
                 } else {
-                    if (list.find(item => item === raw[key]) && Object.keys(raw).length > 1) {
+                    if (list.find(item => item === raw[key])) {
                         console.log(`{ ${key}: [Circluar] }`)
                     } else {
                         Object.assign(result, extract(raw[key], separate))

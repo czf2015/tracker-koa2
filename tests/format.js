@@ -10,7 +10,7 @@ function format(raw, fields, convert) {
             if (Array.isArray(raw[key])) {
               raw[key].forEach(item => item = format(item, [field], convert))
             } else {
-              if (list.find(item => item === raw[key]) && Object.keys(raw).length > 1) {
+              if (list.find(item => item === raw[key])) {
                 console.log(`{ ${key}: [Circular] }`)
                 // console.log(raw[key])
               } else {

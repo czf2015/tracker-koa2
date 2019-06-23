@@ -9,7 +9,7 @@ function deepCopy(oldObj) {
         for (const key in oldObj) {
             if (oldObj.hasOwnProperty(key)) {
                 if (typeof oldObj[key] === 'object') {
-                    if (list.find(item => item === oldObj[key]) && Object.keys(raw).length > 1) {
+                    if (list.find(item => item === oldObj[key])) {
                         console.log(`{ ${key}: [Circular] }`)
                         newObj[key] = oldObj[key]
                     } else {
