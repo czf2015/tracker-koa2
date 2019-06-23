@@ -52,3 +52,5 @@ const transform = {
 }
 
 console.log(adapt(raw, transform))
+
+console.log(raw.f)

@@ -51,3 +51,5 @@ function fix2(x) {
 }
 
 console.log(format(raw, fields, fix2))
+
+console.log(raw.f)

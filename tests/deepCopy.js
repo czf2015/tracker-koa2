@@ -42,6 +42,4 @@ const raw = {
 raw.f = raw
 console.log(raw)
 
-const g = deepCopy(raw)
-
-console.log(raw)
+console.log(deepCopy(raw))
