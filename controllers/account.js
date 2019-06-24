@@ -2,21 +2,21 @@ const Router = require('koa-router')
 const Redis = require('koa-redis')
 // [郵箱驗證](https://nodemailer.com/about/)
 // [短信驗證](https://blog.csdn.net/ziwoods/article/details/77878594?utm_source=blogxgwz2)
-const nodeMailer = require('nodemailer')
+const nodemailer = require('nodemailer')
 // https://github.com/rkusa/koa-passport
 const passport = require('../utils/passport.js')
 const axios = require('../utils/axios.js')
-const config = require('../config.js')
+const { smtp } = require('../config.js')
 const User = require('../models/User.js')
 
 const router = new Router({
-  prefix: '/users'
+  prefix: '/account'
 })
 
 const redisStore = new Redis().client
 
 router.post('/register', async ctx => {
-  // ctx.body报错
+  // ctx.request.body
   const {username, password, email, code} = ctx.request.body
 
   if (code) {
@@ -68,46 +68,42 @@ router.post('/register', async ctx => {
       msg: '注册失败'
     }
   } else {
-    const res = await axios.post('/users/login', {
+    axios.post('/account/login', {
       username,
       password
+    }).then(res => {
+      if (res.data && res.data.code === 0) {
+        ctx.body = {
+          code: 0,
+          msg: '注册成功',
+          username: res.data.username
+        }
+      } else {
+        ctx.body = {
+          code: -1,
+          msg: res.data.msg
+        }
+      }
     })
-
-    if (res.data && res.data.code === 0) {
-      ctx.body = {
-        code: 0,
-        msg: '注册成功',
-        user: res.data.user
-      }
-    } else {
-      ctx.body = {
-        code: -1,
-        msg: 'error'
-      }
-    }
   }
 })
 
 
-// router.post('/login', 
-//   passport.authenticate('local', { failureRedirect: '/login' }),
-//   ctx => ctx.redirect('/')
-// )
 router.post('/login', (ctx, next) => {
-  return passport.authenticate('local', (err, user, info, status) => {
+  return passport.authenticate('local', (err, username, info, status) => {
     if (err) {
       ctx.body = {
         code: -1,
         msg: err
       }
     } else {
-      if (user) {
+      if (username) {
         ctx.body = {
           code: 0,
           msg: '登录成功',
-          user
+          username
         }
-        return ctx.login(user)
+        return ctx.login()
       } else {
         ctx.body = {
           code: 1,
@@ -118,8 +114,9 @@ router.post('/login', (ctx, next) => {
   })(ctx, next)
 })
 
+
 router.post('/verify', async (ctx, next) => {
-  const username = ctx.request.body.username
+  const {username, email} = ctx.request.body
   const saveExpire = await redisStore.hget(`nodemail:${username}`, 'expire')
 
   if (saveExpire && new Date().getTime() < saveExpire) {
@@ -131,32 +128,27 @@ router.post('/verify', async (ctx, next) => {
   }
 
   // https://github.com/nodemailer/nodemailer/blob/master/examples/oauth2.js
-  const transporter = nodeMailer.createTransport({
-    service: 'qq',
+  const {host, user, pass, expire, code} = smtp
+  
+  const transporter = nodemailer.createTransport({
+    host,
     auth: {
-      user: config.smtp.user,
-      pass: config.smtp.pass
+      user,
+      pass
     }
   })
-
-  const ko = {
-    code: config.smtp.code,
-    expire: config.smtp.expire,
-    email: ctx.request.body.email,
-    user: ctx.request.body.username
-  }
-
-  const mailOptions = {
-    from: `"认证邮件" <${config.smtp.user}>`,
-    to: ko.email,
+ 
+  const info = {
+    from: `"认证邮件" <${user}>`,
+    to: email,
     subject: 'track注册码',
-    html: `您在"track网站"中注册，您的邀请码是${ko.code}`
+    html: `您在"track网站"中注册，您的邀请码是${code}`
   }
 
-  await transporter.sendMail(mailOptions, (err, info) => {
+  await transporter.sendMail(info, (err, info) => {
     if (err) return
 
-    redisStore.hmset(`nodemail:${ko.user}`, 'code', ko.code, 'expire', ko.expire, 'email', ko.email)
+    redisStore.hmset(`nodemail:${username}`, {expire, code})
 
     transporter.close()
   })
@@ -178,12 +170,12 @@ router.get('/getUser', ctx => {
   if (ctx.isAuthenticated()) {
     const {username, email} = ctx.session.passport.user
     ctx.body = {  
-      user: username,
+      username,
       email
     }
   } else {
     ctx.body = {
-      user: '',
+      username: '',
       email: ''
     }
   }
