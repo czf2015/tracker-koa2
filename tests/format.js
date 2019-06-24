@@ -1,7 +1,7 @@
 // // 将对象中的某些属性的值进行转换
 function format(raw, fields, convert) {
   const list = {}
-  
+
   return function format(raw, fields, convert) {
     fields.forEach(field => {
       if (typeof list[field] === 'undefined') {
@@ -45,6 +45,7 @@ const raw = {
 }
 
 raw.f = raw
+raw.d.f = raw
 console.log(raw)
 
 const fields = ['b', 'e']

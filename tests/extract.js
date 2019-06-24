@@ -37,6 +37,7 @@ const raw = {
     }
 }
 
+raw.t = raw
 raw.night_time.t = raw
 console.log(raw)
 

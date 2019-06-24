@@ -43,6 +43,7 @@ const raw = {
 }
 
 raw.f = raw
+raw.d.f = raw
 console.log(raw)
 
 const transform = {
