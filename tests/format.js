@@ -1,38 +1,34 @@
 // // 将对象中的某些属性的值进行转换
 function format(raw, fields, convert) {
-    const list = []
-    list.push(raw)
-  
-    return function format(raw, fields, convert) {
-      fields.forEach(field => {
-        for (const key in raw) {
-          if (typeof raw[key] === 'object') {
-            if (Array.isArray(raw[key])) {
-              raw[key].forEach(item => item = format(item, [field], convert))
-            } else {
-              if (list.find(item => item === raw[key])) {
-                console.log(`{ ${key}: [Circular] }`)
-                // console.log(raw[key])
-              } else {
-                raw[key] = format(raw[key], [field], convert)
-              }
-            }
+  fields.forEach(field => {
+    for (const key in raw) {
+      if (typeof raw[key] === 'object') {
+        if (Array.isArray(raw[key])) {
+          raw[key].forEach(item => item = format(item, [field], convert))
+        } else {
+          if (raw[key] === raw) {
+            console.log(`{ ${key}: [Circular] }`)
+            // console.log(raw[key])
           } else {
-            if (key === field) {
-              raw[key] = convert(raw[key])
-            }
+            // list.push(raw)
+            raw[key] = format(raw[key], [field], convert)
           }
         }
-      })
+      } else {
+        if (key === field) {
+          raw[key] = convert(raw[key])
+        }
+      }
+    }
+  })
 
-      return raw
-    }(raw, fields, convert)
-  }
+  return raw
+}
   
   const raw = {
-    b: 1,
+    a: 1,
     c: [1, 2, 3],
-    d: {
+    b: {
         b: 1,
         c: [1, 2, 3],
         d: {

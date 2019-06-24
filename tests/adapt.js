@@ -1,33 +1,27 @@
 // 将对象的属性按照映射更改
 function adapt(raw, transform) {
-    const list = []
+    if (Array.isArray(raw)) {
+        raw.forEach(item => item = adapt(item, transform))
+    } else {
+        Object.keys(raw).forEach(oldKey => {
+            const newKey = transform[oldKey] || oldKey
 
-    return function adapt(raw, transform) {
-        list.push(raw)
+            if (newKey !== oldKey) {
+                raw[newKey] = raw[oldKey]
+                delete raw[oldKey]
+            }
 
-        if (Array.isArray(raw)) {
-            raw.forEach(item => item = adapt(item, transform))
-        } else {
-            Object.keys(raw).forEach(oldKey => {
-                const newKey = transform[oldKey] || oldKey
-
-                if (newKey !== oldKey) {
-                    raw[newKey] = raw[oldKey]
-                    delete raw[oldKey]
+            if (typeof raw[newKey] === 'object') {
+                if (raw[newKey] === raw) {
+                    console.log(`{ ${newKey}: [Circular] }`)
+                } else {
+                    raw[newKey] = adapt(raw[newKey], transform)
                 }
-    
-                if (typeof raw[newKey] === 'object') {
-                    if (list.find(item => item === raw[newKey])) {
-                        console.log(`{ ${newKey}: [Circular] }`)
-                    } else {
-                        raw[newKey] = adapt(raw[newKey], transform) 
-                    }
-                }
-            })
-        }   
+            }
+        })
+    }
 
-        return raw
-    }(raw, transform)
+    return raw
 }
 
 const raw = {
