@@ -16,11 +16,21 @@ export function parseCookie(cookie) {
 }
 
 
-export function format(raw, fields, convert) {
+export format(raw, fields, convert) {
   fields.forEach(field => {
     for (const key in raw) {
       if (typeof raw[key] === 'object') {
-        raw[key] = format(raw[key], [field], convert)
+        if (Array.isArray(raw[key])) {
+          raw[key].forEach(item => item = format(item, [field], convert))
+        } else {
+          if (raw[key] === raw) {
+            console.log(`{ ${key}: [Circular] }`)
+            // console.log(raw[key])
+          } else {
+            // list.push(raw)
+            raw[key] = format(raw[key], [field], convert)
+          }
+        }
       } else {
         if (key === field) {
           raw[key] = convert(raw[key])
@@ -34,18 +44,28 @@ export function format(raw, fields, convert) {
 
 
 export function adapt(raw, transform) {
-  const result = Array.isArray(raw) ? [] : {}
+  if (Array.isArray(raw)) {
+      raw.forEach(item => item = adapt(item, transform))
+  } else {
+      Object.keys(raw).forEach(oldKey => {
+          const newKey = transform[oldKey] || oldKey
 
-  Object.keys(raw).forEach(oldKey => {
-    const newKey = Array.isArray(raw) ?
-      oldKey : transform[oldKey] || oldKey
-    result[newKey] = raw[oldKey]
-    if (raw[oldKey] && typeof raw[oldKey] === 'object' && !Array.isArray(raw[oldKey])) {
-      result[newKey] = adapt(raw[oldKey], transform)
-    }
-  })
+          if (newKey !== oldKey) {
+              raw[newKey] = raw[oldKey]
+              delete raw[oldKey]
+          }
 
-  return result;
+          if (typeof raw[newKey] === 'object') {
+              if (raw[newKey] === raw) {
+                  console.log(`{ ${newKey}: [Circular] }`)
+              } else {
+                  raw[newKey] = adapt(raw[newKey], transform)
+              }
+          }
+      })
+  }
+
+  return raw
 }
 
 
@@ -53,13 +73,21 @@ export function extract(raw, separate) {
   const result = {}
 
   for (const key in raw) {
-    if (typeof raw[key] === 'object' && !Array.isArray(raw[key])) {
-      Object.assign(result, extract(raw[key], separate))
-    } else {
       if (key.includes(separate)) {
-        result[key] = raw[key]
+          result[key] = raw[key]
       }
-    }
+
+      if (typeof raw[key] === 'object') {
+          if (Array.isArray(raw[key])) {
+              continue
+          } else {
+              if (raw[key] === raw) {
+                  console.log(`{ ${key}: [Circluar] }`)
+              } else {
+                  Object.assign(result, extract(raw[key], separate))
+              }
+          }
+      }
   }
 
   return result
