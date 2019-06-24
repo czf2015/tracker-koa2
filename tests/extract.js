@@ -1,26 +1,32 @@
 // 从对象中抽取属性包含某个字符串的属性
 function extract(raw, separate) {
-    const result = {}
+    const list = []
 
-    for (const key in raw) {
-        if (key.includes(separate)) {
-            result[key] = raw[key]
-        }
+    return function extract(raw, separate) {
+        list.push(raw)
 
-        if (typeof raw[key] === 'object') {
-            if (Array.isArray(raw[key])) {
-                continue
-            } else {
-                if (raw[key] === raw) {
-                    console.log(`{ ${key}: [Circluar] }`)
+        const result = {}
+
+        for (const key in raw) {
+            if (key.includes(separate)) {
+                result[key] = raw[key]
+            }
+
+            if (typeof raw[key] === 'object') {
+                if (Array.isArray(raw[key])) {
+                    continue
                 } else {
-                    Object.assign(result, extract(raw[key], separate))
+                    if (list.find(item => item === raw[key])) {
+                        console.log(`{ ${key}: [Circluar] }`)
+                    } else {
+                        Object.assign(result, extract(raw[key], separate))
+                    }
                 }
             }
         }
-    }
 
-    return result
+        return result
+    }(raw, separate)
 }
 
 const raw = {
@@ -31,7 +37,7 @@ const raw = {
     }
 }
 
-raw.t = raw
+raw.night_time.t = raw
 console.log(raw)
 
 const separate = 'time'
