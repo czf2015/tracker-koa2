@@ -41,7 +41,7 @@ const targetSchema = new mongoose.Schema({
 })
 
 const playerSchema = new mongoose.Schema({
-  user: { type: mongoose.Types.ObjectId, ref: 'User' }, // 用户
+  user_id: { type: mongoose.Types.ObjectId, ref: 'User' }, // 用户
   posture: String, // 姿势
   prop: Boolean, // 有无依托
   trace: [{
