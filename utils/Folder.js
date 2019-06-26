@@ -1,7 +1,7 @@
 const fs = require('fs');
 const { join } = require('path')
 
-class File {
+class Folder {
     find(path, type) {
         const files = []
         const findFiles = (path) => {
@@ -22,6 +22,9 @@ class File {
     }
 }
 
-const f = new File()
-const files = f.find(`${__dirname}/..`, 'md')
-console.log(files)
+module.exports = Folder
+exports.folder = new Folder()
+
+// const folder = new Folder()
+// const files = folder.find(`${__dirname}/..`, 'md')
+// console.log(files)

@@ -5,7 +5,6 @@ const session = require('koa-generic-session')
 const config = require('./config.js')
 // https://github.com/rkusa/koa-passport#usage
 const passport = require('./middlewares/passport.js')
-const routes = `${__dirname}/controllers`
 
 const app = new Koa()
 app.proxy = true
@@ -19,8 +18,8 @@ app.use(bodyParser({
     extendTypes: ['json', 'form', 'text']
 }))
 
-require('fs').readdirSync(routes).forEach(route => {
-    const router = require(`${routes}/${route}`)
+require('fs').readdirSync(config.routers).forEach(item => {
+    const router = require(`${config.routers}/${item}`)
     app.use(router.routes())
         .use(router.allowedMethods())
 })

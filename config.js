@@ -1,6 +1,6 @@
 const store = require('koa-redis')()
-const db = require('mongoose')
 
+const db = require('mongoose')
 db.connect('mongodb://127.0.0.1:27017/track', {
     useNewUrlParser: true
 })
@@ -12,6 +12,7 @@ module.exports = {
   session: { key: 'czf', prefix: 'czf:uid', store },
   db,
   store,
+  routers: `${__dirname}/controllers`,
   smtp: {
     get host() {
       return 'smtp.qq.com'
