@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const infoSchema = new mongoose.Schema({
-  _id: String,
+  mark: String,
   name: String,
   dir: String,
   description: String,
@@ -41,7 +41,7 @@ const targetSchema = new mongoose.Schema({
 })
 
 const playerSchema = new mongoose.Schema({
-  user: String, // 用户
+  user: { type: Schema.Types.ObjectId, ref: 'User' }, // 用户
   posture: String, // 姿势
   prop: Boolean, // 有无依托
   trace: [{

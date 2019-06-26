@@ -57,11 +57,11 @@ const schema = new mongoose.Schema({
     type: Date,
   },
   meta: {
-    create_time: {
+    createdAt: {
       type: Date,
       default: Date.now()
     },
-    update_time: {
+    updatedAt: {
       type: Date,
       default: Date.now()
     }
@@ -76,15 +76,15 @@ schema.virtual('isLocked').get(function() {
 
 schema.pre('save', function(next) {
   if (this.isNew) {
-    this.meta.create_time = this.meta.update_time = Date.now()
+    this.meta.createdAt = this.meta.updatedAt = Date.now()
   } else {
-    this.meta.update_time = Date.now()
+    this.meta.updatedAt = Date.now()
   }
 
   next()
 })
 // 
-schema.pre('save', function(next) {
+schema.pre('save', function (next) {
   if (!this.isModified('password')) return next()
   // 加盐
   bcrypt.genSalt(SALT_WORK_FACTOR, (err, salt) => {

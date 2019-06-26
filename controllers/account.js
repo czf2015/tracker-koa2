@@ -4,7 +4,7 @@ const Redis = require('koa-redis')
 // [短信驗證](https://blog.csdn.net/ziwoods/article/details/77878594?utm_source=blogxgwz2)
 const nodemailer = require('nodemailer')
 // https://github.com/rkusa/koa-passport
-const passport = require('../utils/passport.js')
+const passport = require('koa-passport')
 const axios = require('../utils/axios.js')
 const { smtp } = require('../config.js')
 const User = require('../models/User.js')

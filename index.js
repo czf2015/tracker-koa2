@@ -5,7 +5,7 @@ const session = require('koa-generic-session')
 const mongoose = require('mongoose')
 const config = require('./config.js')
 // https://github.com/rkusa/koa-passport#usage
-const passport = require('./utils/passport.js')
+const passport = require('./middlewares/passport.js')
 const home = require('./controllers/home.js')
 const account = require('./controllers/account.js')
 

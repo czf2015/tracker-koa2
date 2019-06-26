@@ -1,41 +1,19 @@
-class DataBase {
-    constructor(db, tbs) {
-        super()
-        this.name = db
-        tbs.forEach(tb => this[tb] = {})
+const fs = require('fs');
+
+class Database {
+    constructor(filename) {
+        this.filename = filename;
+        this.data = {};
     }
 
-    add(param, handle) {
-
+    save(cb) {
+        fs.writeFile(this.filename, JSON.stringify(this.data), cb);
     }
 
-    insert(param, handle) {
-
-    }
-
-    findAll(param, handle) {
-
-    }
-
-    findOne(param, handle) {
-
-    }
-
-    updateAll(param, handle) {
-
-    }
-
-    updateOne(param, handle) {
-
-    }
-
-    deleteAll(param, handle) {
-
-    }
-
-    deleteOne(param, handle) {
-        
+    insert(key, value) {
+        this.data[key] = value;
     }
 }
 
-module.exports = DataBase
+
+module.exports = Database
