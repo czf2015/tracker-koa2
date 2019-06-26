@@ -114,7 +114,7 @@ export function extract(raw, pattern) {
 
 
 export function extractTimes(obj) {
-  const _obj = extract(obj, /time$/)
+  const _obj = extract(obj, /\w+_time$/)
 
   return Object.keys(_obj)
     .sort((a, b) => compareTime(_obj[a], _obj[b]))
