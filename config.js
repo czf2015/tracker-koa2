@@ -1,17 +1,17 @@
-const Redis = require('koa-redis')
+const store = require('koa-redis')()
+const db = require('mongoose')
+
+db.connect('mongodb://127.0.0.1:27017/track', {
+    useNewUrlParser: true
+})
 
 module.exports = {
+  host: process.env.HOST || '127.0.0.1',
+  port: process.env.PORT || 3000,
   keys: ['czf', 'secret'],
-  session: { key: 'czf', prefix: 'czf:uid', store: new Redis() },
-  db: 'mongodb://127.0.0.1:27017/track',
-  redis: {
-    get host() {
-      return '127.0.0.1'
-    },
-    get port() {
-      return 6739
-    }
-  },
+  session: { key: 'czf', prefix: 'czf:uid', store },
+  db,
+  store,
   smtp: {
     get host() {
       return 'smtp.qq.com'

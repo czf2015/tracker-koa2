@@ -2,19 +2,11 @@ const Koa = require('koa')
 const consola = require('consola')
 const bodyParser = require('koa-bodyparser')
 const session = require('koa-generic-session')
-const mongoose = require('mongoose')
 const config = require('./config.js')
 // https://github.com/rkusa/koa-passport#usage
 const passport = require('./middlewares/passport.js')
 const home = require('./controllers/home.js')
 const account = require('./controllers/account.js')
-
-mongoose.connect(config.db, {
-    useNewUrlParser: true
-})
-
-const host = process.env.HOST || '127.0.0.1'
-const port = process.env.PORT || 3000
 
 const app = new Koa()
 // [cookie]s(https://github.com/pillarjs/cookies#example)
@@ -40,9 +32,9 @@ app.use(home.routes())
 app.use(account.routes())
     .use(account.allowedMethods())
 
-app.listen(port, host)
+app.listen(config.port, config.host)
 
 consola.ready({
-    message: `Server listening on http://${host}:${port}`,
+    message: `Server listening on http://${config.host}:${config.port}`,
     badge: true
 })

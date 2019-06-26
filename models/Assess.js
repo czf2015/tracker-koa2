@@ -5,13 +5,9 @@ const schema = new mongoose.Schema({
   accuracy: Number, // 瞄准精度
   deviation: Number, // 击发误差
   meta: {
-    createdAt: {
-      type: Date,
-      default: Date.now()
-    },
-    region: String, // 地区(分隔符'-')
+    user: { type: mongoose.Types.ObjectId, ref: 'User' },
     groups: [String], // 群属(分隔符'-')
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+    region: String, // 地区(分隔符'-')
   }
 })
 

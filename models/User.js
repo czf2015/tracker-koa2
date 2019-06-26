@@ -24,24 +24,10 @@ const schema = new mongoose.Schema({
   weight: {
     type: Number
   },
-  // interest: {
-  //   type: [String]
-  // },
-  // education: {
-  //   type: [String]
-  // },
-  // occupation: {
-  //   type: [String]
-  // },
-  // phone: {
-  //   type: Number,
-  //   required: true,
-  //   unique: true
-  // },
   email: {
     type: String,
     required: true,
-    // unique: true
+    unique: true
   },
   password: {
     type: String,
@@ -56,33 +42,24 @@ const schema = new mongoose.Schema({
   lock_until: {
     type: Date,
   },
-  meta: {
-    createdAt: {
-      type: Date,
-      default: Date.now()
-    },
-    updatedAt: {
-      type: Date,
-      default: Date.now()
-    }
+  timestamp: {
+    type: Date,
+    default: Date.now()
   }
 })
 
 // 增加虚拟字段
 // Virtuals 是 document 的属性，但是不会被保存到 MongoDB。 getter 可以用于格式化和组合字段数据， setter 可以很方便地分解一个值到多个字段。
-schema.virtual('isLocked').get(function() {
+schema.virtual('isLocked').get(function () {
   return !!(this.lock_until && this.lock_until > Date.now())
 })
 
-schema.pre('save', function(next) {
-  if (this.isNew) {
-    this.meta.createdAt = this.meta.updatedAt = Date.now()
-  } else {
-    this.meta.updatedAt = Date.now()
-  }
-
+// 
+schema.pre('save', function (next) {
+  this.timestamp = Date.now()
   next()
 })
+
 // 
 schema.pre('save', function (next) {
   if (!this.isModified('password')) return next()
@@ -97,19 +74,16 @@ schema.pre('save', function (next) {
     })
   })
 })
+
 // 实例方法
 schema.methods = {
-  comparePassword(_password, password) {
-    return new Promise((resolve, reject) => {
-      bcrypt.compare(_password, password, (err, isMatch) => {
-        if (!err) {
-          resolve(isMatch)
-        } else {
-          reject(err)
-        }
-      })
+  verifyPassword(password) {
+    bcrypt.compare(password, this.password, (err, isMatch) => {
+      console.log(isMatch)
+      return isMatch
     })
   },
+
   incLoginAttepts(user) {
     return new Promise((resolve, reject) => {
       if (this.lock_until && Date.now() > this.lock_until) {
@@ -154,8 +128,8 @@ schema.methods = {
     const token = jwt.sign({
       username: this.username
     }, 'track', {
-      expiresIn: 7200
-    })
+        expiresIn: 7200
+      })
 
     return token
   },
