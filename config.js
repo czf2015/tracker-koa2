@@ -12,7 +12,6 @@ module.exports = {
   session: { key: 'czf', prefix: 'czf:uid', store },
   db,
   store,
-  routers: `${__dirname}/controllers`,
   smtp: {
     get host() {
       return 'smtp.qq.com'
