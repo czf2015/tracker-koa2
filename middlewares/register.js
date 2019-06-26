@@ -1,7 +1,7 @@
 
-const { store } = require('../config.js')
 const axios = require('../utils/axios.js')
 const User = require('../models/User.js')
+const { store } = require('../config.js')
 
 module.exports = async ctx => {
     // ctx.request.body
