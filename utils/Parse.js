@@ -82,16 +82,16 @@ export function adapt(raw, transform) {
 }
 
 
-export function extract(raw, separate) {
+export function extract(raw, pattern) {
   const list = []
 
-  return function extract(raw, separate) {
+  return function extract(raw, pattern) {
     list.push(raw)
 
     const result = {}
 
     for (const key in raw) {
-      if (key.includes(separate)) {
+      if (key.match(pattern)) {
         result[key] = raw[key]
       }
 
@@ -102,19 +102,19 @@ export function extract(raw, separate) {
           if (list.find(item => item === raw[key])) {
             console.log(`{ ${key}: [Circluar] }`)
           } else {
-            Object.assign(result, extract(raw[key], separate))
+            Object.assign(result, extract(raw[key], pattern))
           }
         }
       }
     }
 
     return result
-  }(raw, separate)
+  }(raw, pattern)
 }
 
 
 export function extractTimes(obj) {
-  const _obj = extract(obj, 'time')
+  const _obj = extract(obj, /time$/)
 
   return Object.keys(_obj)
     .sort((a, b) => compareTime(_obj[a], _obj[b]))

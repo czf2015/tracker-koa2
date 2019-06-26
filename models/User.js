@@ -13,31 +13,31 @@ const schema = new mongoose.Schema({
   },
   role: {
     type: String,
-    default: 'user'
+    default: 'user', // { user: '普通', 'admin': '管理' }
   },
   birthday: {
     type: Date
   },
   gender: {
-    type: String,
+    type: Number,
+    default: 0, // { 0: '未知', 1: '男', 2: '女' }
   },
   weight: {
-    type: Number
+    type: Number, // { unit: 'kg' }
   },
   email: {
     type: String,
+    unique: true,
     required: true,
-    unique: true
   },
   password: {
     type: String,
-    required: true
+    required: true, // { minlength: 6, match: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z_]{8,16}$/ }
   },
   token: String,
   login_attempts: {
     type: Number,
-    required: true,
-    default: 0
+    default: 0,
   },
   lock_until: {
     type: Date,
