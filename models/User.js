@@ -32,7 +32,7 @@ const schema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true, // { minlength: 6, match: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z_]{8,16}$/ }
+    required: true, // { minlength: 6, maxlength: 12, match: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z_]{6,12}$/ }
   },
   token: String,
   login_attempts: {
