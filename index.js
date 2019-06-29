@@ -1,10 +1,11 @@
+#!/usr/bin/env node
 const Koa = require('koa')
 const consola = require('consola')
 const bodyParser = require('koa-bodyparser')
 const session = require('koa-generic-session')
 const config = require('./config.js')
 // https://github.com/rkusa/koa-passport#usage
-const passport = require('./middlewares/passport.js')
+const passport = require('./middleware/passport.js')
 
 const app = new Koa()
 app.proxy = true

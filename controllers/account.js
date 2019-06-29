@@ -1,7 +1,7 @@
 const Router = require('koa-router')
-const register = require('../middlewares/register.js')
-const authorize = require('../middlewares/authorize.js')
-const verify = require('../middlewares/verify.js')
+const register = require('../middleware/register.js')
+const authorize = require('../middleware/authorize.js')
+const verify = require('../middleware/verify.js')
 
 const router = new Router({
   prefix: '/account'
