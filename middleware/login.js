@@ -2,6 +2,8 @@ const passport = require('./passport.js')
 
 module.exports = (ctx, next) => {
   passport.authenticate('local', (err, status, info) => {
+    console.log(ctx)
+    console.log(err, status, info)
     if (err) {
       ctx.body = {
         code: -1,
