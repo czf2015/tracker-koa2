@@ -1,6 +1,7 @@
 const passport = require('./passport.js')
 
 module.exports = (ctx, next) => {
+  // 必须 return
   return passport.authenticate('local', (err, status, info) => {
     if (err) {
       ctx.body = {
