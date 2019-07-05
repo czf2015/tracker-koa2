@@ -79,7 +79,7 @@ schema.pre('save', function (next) {
 schema.methods = {
   verifyPassword(password) {
     bcrypt.compare(password, this.password, (err, isMatch) => {
-      console.log(isMatch)
+      // console.log(isMatch)
       return isMatch
     })
   },

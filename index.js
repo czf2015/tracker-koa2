@@ -19,7 +19,7 @@ app.use(bodyParser({
     extendTypes: ['json', 'form', 'text']
 }))
 
-require('fs').readdirSync('./controllers').forEach(item => {
+require('fs').readdirSync('controllers').forEach(item => {
     const router = require(`./controllers/${item}`)
     app.use(router.routes())
         .use(router.allowedMethods())
