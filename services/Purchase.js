@@ -2,10 +2,10 @@
 import {
     base,
     path
-} from '../mocks/API.js'
+} from '../mock/API.js'
 import {
     interval
-} from '../mocks/TIME.js'
+} from '../mock/TIME.js'
 // 
 import {
     dispatch,

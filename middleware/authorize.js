@@ -1,25 +1,14 @@
-const passport = require('./passport.js')
-
-module.exports = (ctx, next) => {
-  return passport.authenticate('local', (err, status, info) => {
-    if (err) {
-      ctx.body = {
-        code: -1,
-        msg: err
+module.exports = ctx => {
+    if (ctx.isAuthenticated()) {
+      const {username, email} = ctx.session.passport.user
+      ctx.body = {  
+        username,
+        email
       }
     } else {
-      if (status) {
-        ctx.body = {
-          code: 0,
-          msg: '登录成功',
-        }
-        return ctx.login(status)
-      } else {
-        ctx.body = {
-          code: 1,
-          msg: info
-        }
+      ctx.body = {
+        username: '',
+        email: ''
       }
     }
-  })(ctx, next)
-}
+  }

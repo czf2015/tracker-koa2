@@ -2,7 +2,7 @@
 import {
     base,
     path,
-} from '../mocks/API.js'
+} from '../mock/API.js'
 // 
 import {
     dispatch,

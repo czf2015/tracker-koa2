@@ -1,7 +1,10 @@
 const Router = require('koa-router')
 const register = require('../middleware/register.js')
-const authorize = require('../middleware/authorize.js')
+const login = require('../middleware/login.js')
+const logout = require('../middleware/logout.js')
 const verify = require('../middleware/verify.js')
+const authorize = require('../middleware/authorize.js')
+
 
 const router = new Router({
   prefix: '/account'
@@ -9,33 +12,13 @@ const router = new Router({
 
 router.post('/register', register)
 
+router.post('/login', login)
 
-router.post('/login', authorize)
-
+router.get('/logout', logout)
 
 router.post('/verify', verify)
 
-
-router.get('/logout', ctx => {
-  ctx.logout()
-  ctx.redirect('/')
-})
-
-
-router.get('/user', ctx => {
-  if (ctx.isAuthenticated()) {
-    const {username, email} = ctx.session.passport.user
-    ctx.body = {  
-      username,
-      email
-    }
-  } else {
-    ctx.body = {
-      username: '',
-      email: ''
-    }
-  }
-})
+router.get('/user', authorize)
 
 
 module.exports = router

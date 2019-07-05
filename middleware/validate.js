@@ -2,7 +2,6 @@ function parseField(field) {
     return field
         .split(/\[|\]/)
         .filter((s) => s);
-
 }
 
 
