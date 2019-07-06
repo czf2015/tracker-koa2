@@ -11,20 +11,6 @@ const schema = new mongoose.Schema({
     type: String,
     required: true
   },
-  role: {
-    type: String,
-    default: 'user', // { user: '普通', 'admin': '管理' }
-  },
-  birthday: {
-    type: Date
-  },
-  gender: {
-    type: Number,
-    default: 0, // { 0: '未知', 1: '男', 2: '女' }
-  },
-  weight: {
-    type: Number, // { unit: 'kg' }
-  },
   email: {
     type: String,
     unique: true,
@@ -33,6 +19,18 @@ const schema = new mongoose.Schema({
   password: {
     type: String,
     required: true, // { minlength: 6, maxlength: 12, match: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z_]{6,12}$/ }
+  },
+  role: {
+    type: String,
+    default: 'user', // { user: '普通', 'admin': '管理' }
+  },
+  identity_id: {type: mongoose.Types.ObjectId, ref: 'Identity'},
+  address_id: { type: mongoose.Types.ObjectId, ref: 'Address' },
+  height: {
+    type: Number, // { unit: 'cm' }
+  },
+  weight: {
+    type: Number, // { unit: 'kg' }
   },
   token: String,
   login_attempts: {
