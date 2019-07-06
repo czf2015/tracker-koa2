@@ -72,6 +72,5 @@ const recordSchema = new mongoose.Schema({
   players: [playerSchema]
 })
 
-const Record = mongoose.model('Record', recordSchema)
 
-module.exports = Record
+module.exports = mongoose.model('Record', recordSchema)
