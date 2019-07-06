@@ -3,11 +3,9 @@ const Questionnaire = require('../models/Questionnaire.js')
 
 const router = new Router()
 
-['questions', 'relations'].forEach(item => {
-    router.get(`/questionnaire/${item}`, async ctx => {
-        const results = await Questionnaire.findOne({}, {[item]: 1, _id: 0})
-        ctx.body = {status: 'success', results}
-    })
+router.get('/questionnaire', async ctx => {
+    const result = await Questionnaire.findOne()
+    ctx.body = {status: 'success', result}
 })
 
 module.exports = router

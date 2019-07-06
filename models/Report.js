@@ -57,7 +57,7 @@ const productSchema = new mongoose.Schema({
 })
 
 const schema = new mongoose.Schema({
-    "id": Number, // 63,
+    "id": String, // 63,
     "openid": String, // "okhMG0cb-prOSD2NTnAYBmHb4aw4",
     "userInfo": userInfoSchema,
     "targets": String, // "提高免疫力; 保护心脏健康; 提高脑力; 改善易疲劳、乏力或睡眠质量",

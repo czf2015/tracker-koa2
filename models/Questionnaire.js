@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const optionSchema = new mongoose.Schema({
-    "id": 1,
+    "id": String,
     "text": String, // "男",
     "value": String, // "1",
     "option_id": Number, // 1,
