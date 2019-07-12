@@ -1,14 +1,11 @@
 const Router = require('koa-router')
+const receive = require('../middleware/receive.js')
 const Report = require('../models/Report.js')
 
 const router = new Router({
     prefix: '/reports'
   })
 
-router.get('/:openid', async ctx => {
-    console.log(ctx.params)
-    const result = await Report.findOne(ctx.params)
-    ctx.body = {status: 'success', result}
-})
+router.get('/:openid', receive(Report))
 
 module.exports = router

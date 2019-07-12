@@ -1,4 +1,5 @@
 const Router = require('koa-router')
+const receive = require('../middleware/receive.js')
 const Product = require('../models/Product.js')
 
 const router = new Router({
@@ -6,13 +7,7 @@ const router = new Router({
 })
 
 router
-    .get('/', async ctx => {
-        const results = await Product.find(ctx.params)
-        ctx.body = { status: 'success', results }
-    })
-    .get('/:id', async ctx => {
-        const result = await Product.findOne(ctx.params)
-        ctx.body = { status: 'success', result }
-    })
+    .get('/', receive(Product, 'find'))
+    .get('/:id', receive(Product))
 
 module.exports = router
