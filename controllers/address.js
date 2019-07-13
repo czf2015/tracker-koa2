@@ -3,8 +3,10 @@ const Assess = require('../models/Assess.js')
 
 const router = new Router()
 
-router.get('/', async ctx => {
-    ctx.body = {title: 'Example'}
-})
+router
+    .get('/', async ctx => {
+        ctx.body = { title: 'Example' }
+    })
+
 
 module.exports = router

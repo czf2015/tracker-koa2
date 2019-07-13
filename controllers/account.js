@@ -5,7 +5,6 @@ const logout = require('../middleware/logout.js')
 const verify = require('../middleware/verify.js')
 const auth = require('../middleware/auth.js')
 
-
 const router = new Router({
   prefix: '/account'
 })
