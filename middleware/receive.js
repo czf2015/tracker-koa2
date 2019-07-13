@@ -68,6 +68,7 @@ function update(model) {
     }
 }
 
+
 module.exports = {
     query,
     create,
