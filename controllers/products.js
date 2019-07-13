@@ -1,13 +1,14 @@
 const Router = require('koa-router')
-const receive = require('../middleware/receive.js')
 const Product = require('../models/Product.js')
+const query = require('../middleware/query.js')
 
 const router = new Router({
-    prefix: '/products'
+  prefix: '/products'
 })
 
 router
-    .get('/', receive(Product, 'find'))
-    .get('/:id', receive(Product))
+  .get('/', query(Product, true))
+  .get('/:id', query(Product))
+
 
 module.exports = router
