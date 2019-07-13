@@ -1,6 +1,6 @@
 const Router = require('koa-router')
 const Product = require('../models/Product.js')
-const query = require('../middleware/query.js')
+const { query } = require('../middleware/receive.js')
 
 const router = new Router({
   prefix: '/products'
