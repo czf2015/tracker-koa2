@@ -8,6 +8,7 @@ const router = new Router({
 
 router
   .get('/:openid', query(Report))
+  .get('/', query(Report, true))
 
 
 module.exports = router

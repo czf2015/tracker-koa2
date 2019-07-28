@@ -45,3 +45,11 @@ export function keyValue(raw) {
   return typeof raw === 'object' ? keyValues(raw)[0] : raw
 }
 
+// 将origin字段值传入target
+export function pass(target, origin) {
+  if (Array.isArray(origin)) {
+    origin.forEach(item, pass(target, item))
+  } else {
+    Object.keys(origin).forEach(key => target[key] = origin[key])
+  }
+}
