@@ -8,12 +8,22 @@ export function bind(fn, context) {
 // 柯里化
 export function curry(fn) {
     const args = Array.prototype.slice.call(arguments, 1)
-    return function () {
-        const innerArgs = Array.prototype.slice.call(arguments)
-        const finalArgs = args.concat(innerArgs)
-        return fn.apply(null, finalArgs)
+    const _curry = function () {
+        if (arguments.length === 0) {
+            return fn.apply(null, args)
+        } else {
+            args = args.concat(Array.prototype.slice.call(arguments))
+            return _curry
+        }
     }
+    return _curry
 }
+
+function add(...list) {
+    return args.reduce((a, b) => a + b)
+}
+
+console.log(curry(add, 1, 2, 3)(4)(5)(6)())
 
 // 去柯里化
 Function.prototype.uncurrying = function () {
