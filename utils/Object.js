@@ -53,3 +53,7 @@ export function pass(target, origin) {
     Object.keys(origin).forEach(key => target[key] = origin[key])
   }
 }
+
+export function k2o({key, value}) {
+  return {[key]: value}
+}

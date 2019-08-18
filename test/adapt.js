@@ -17,7 +17,7 @@ function adapt(raw, transform) {
                 }
 
                 if (typeof raw[newKey] === 'object') {
-                    if (list.find(item => item === raw[newKey])) {
+                    if (list.includes(raw[newKey])) {
                         console.log(`{ ${newKey}: [Circular] }`)
                     } else {
                         raw[newKey] = adapt(raw[newKey], transform)

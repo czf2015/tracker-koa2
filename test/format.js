@@ -14,7 +14,7 @@ function format(raw, fields, convert) {
           if (Array.isArray(raw[key])) {
             raw[key].forEach(item => item = format(item, [field], convert))
           } else {
-            if (list[field].find(item => item === raw[key])) {
+            if (list[field].includes(raw[key])) {
               console.log(`{ ${key}: [Circular] }`)
             } else {
               raw[key] = format(raw[key], [field], convert)
@@ -45,7 +45,7 @@ const raw = {
 }
 
 raw.f = raw
-raw.d.f = raw
+raw.b.d.f = raw
 console.log(raw)
 
 const fields = ['b', 'e']

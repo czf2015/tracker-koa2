@@ -4,8 +4,8 @@ const Assess = require('../models/Assess.js')
 const router = new Router()
 
 router
-    .get('/', async ctx => {
-        ctx.body = { title: 'Example' }
+    .get('/refund', async ctx => {
+        ctx.body = { page: 'refund' }
     })
 
 

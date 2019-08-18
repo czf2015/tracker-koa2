@@ -19,11 +19,11 @@ export function curry(fn) {
     return _curry
 }
 
-function add(...list) {
-    return args.reduce((a, b) => a + b)
-}
+// function add(...list) {
+//     return args.reduce((a, b) => a + b)
+// }
 
-console.log(curry(add, 1, 2, 3)(4)(5)(6)())
+// console.log(curry(add, 1, 2, 3)(4)(5)(6)())
 
 // 去柯里化
 Function.prototype.uncurrying = function () {
@@ -60,3 +60,9 @@ export function throttle(method, context) {
     }, 100)
 }
 
+
+export function sleep(duration) {
+    return new Promise((resolve, reject) => {
+        setTimeout(resolve, duration)
+    })
+  }

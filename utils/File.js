@@ -5,7 +5,7 @@ const fs = require('fs');
  * @param {*} src 
  * @param {*} type 
  */
-export function find(src, type) {
+function find(src, reg) {
     const files = []
 
     const findFiles = (src) => {
@@ -14,7 +14,7 @@ export function find(src, type) {
             const stat = fs.statSync(_src);
 
             if (stat.isFile()) {
-                if (_src.endsWith(type)) {
+                if (path.match(reg)) {
                     files.push(_src);
                 }
             } else {
@@ -33,7 +33,7 @@ export function find(src, type) {
  * @param {*} src 
  * @param {*} dst 
  */
-export function copy(src, dst) {
+function copy(src, dst) {
     fs.exists(dst, isExist => {
         if (isExist) {
             fs.readdir(src, (err, paths) => {
@@ -61,7 +61,7 @@ export function copy(src, dst) {
  * 
  * @param {*} src 
  */
-export function remove(src) {
+function remove(src) {
     if (fs.existsSync(src)) {
         fs.readdirSync(src).forEach(path => {
             const _src = `${src}/${path}`
@@ -74,4 +74,27 @@ export function remove(src) {
     }
 
     fs.rmdirSync(src)
+}
+
+/**
+ * 
+ * @param {*} path 
+ */
+function read(path) {
+    return new Promise((resolve, reject) => {
+        fs.readFile(`${__dirname}/${path}`, 'utf-8', (err, data) => {
+            if (err) {
+                reject(err)
+            } else {
+                resolve(data)
+            }
+        })
+    })
+}
+
+module.exports = {
+    find,
+    copy,
+    remove,
+    read,
 }

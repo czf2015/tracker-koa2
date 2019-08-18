@@ -31,7 +31,7 @@ export function format(raw, fields, convert) {
           if (Array.isArray(raw[key])) {
             raw[key].forEach(item => item = format(item, [field], convert))
           } else {
-            if (list[field].find(item => item === raw[key])) {
+            if (list[field].includes(raw[key])) {
               console.log(`{ ${key}: [Circular] }`)
             } else {
               raw[key] = format(raw[key], [field], convert)
@@ -68,7 +68,7 @@ export function adapt(raw, transform) {
         }
 
         if (typeof raw[newKey] === 'object') {
-          if (list.find(item => item === raw[newKey])) {
+          if (list.includes(raw[newKey])) {
             console.log(`{ ${newKey}: [Circular] }`)
           } else {
             raw[newKey] = adapt(raw[newKey], transform)
@@ -99,7 +99,7 @@ export function extract(raw, pattern) {
         if (Array.isArray(raw[key])) {
           continue
         } else {
-          if (list.find(item => item === raw[key])) {
+          if (list.includes(raw[key])) {
             console.log(`{ ${key}: [Circluar] }`)
           } else {
             Object.assign(result, extract(raw[key], pattern))
