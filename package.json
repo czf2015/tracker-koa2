@@ -22,7 +22,7 @@
     "axios": "^0.19.0",
     "bcrypt": "^3.0.6",
     "consola": "^2.9.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
     "koa-generic-session": "^2.0.1",
